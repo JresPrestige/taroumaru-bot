@@ -4,6 +4,8 @@ const axios = require('axios');
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS", ] });
 
+const PREFIX = '!';
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -33,8 +35,16 @@ client.on('guildMemberRemove', async member => {
 
 
 client.on('messageCreate', async msg => {
-  if (msg.content === '!ping') {
-    msg.reply(`Kecepatan Internet sekarang ${Date.now() - msg.createdTimestamp}ms.`);
+  if (!msg.content.startsWith(PREFIX)) return;
+  let args = msg.content.substring(PREFIX.length).split(" ")
+  console.log(args[0]);
+  
+  if (args[0] === 'ping') {
+    msg.reply(`Kecepatan Internet sekarang ${msg.createdTimestamp - Date.now()}ms.`);
+  }
+
+  if (args[0] === 'info') {
+    msg.reply(`Ini adalah bot yang dibuat oleh ${msg.author.username}`);
   }
 });
 
